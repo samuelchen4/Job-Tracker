@@ -1,0 +1,23 @@
+{
+  "name": "jobtracker-backend",
+  "version": "1.0.0",
+  "description": "api for jobtracker application",
+  "main": "backend/server.js",
+  "scripts": {
+    "dev": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "app": "concurrently \"npm run dev\" \"npm run client\"",
+    "reset": "node backend/data/deleteAllDocuments"
+  },
+  "author": "Samuel Chen",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.21"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3",
+    "puppeteer": "^19.7.5"
+  }
+}
