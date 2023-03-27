@@ -6,7 +6,7 @@ const parseJob = async (req, res) => {
   try {
     const encodedUrl = req.params.encodedUrl;
     const url = decodeURIComponent(encodedUrl);
-    console.log(url); // debugging
+    // console.log(url); // debugging
     // setup puppeteer
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -70,7 +70,6 @@ const getJobs = async (req, res) => {
 const addJob = async (req, res) => {
   try {
     const data = req.body;
-    console.log(data);
     const resData = await Job.create(data);
     res.status(200).json(resData);
   } catch (err) {
