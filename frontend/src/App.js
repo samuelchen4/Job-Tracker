@@ -19,8 +19,8 @@ function App() {
   };
 
   useEffect(() => {
-    if (!jobList.length && !isLoading) dispatch(getJobs());
-  }, [dispatch, jobList, isLoading]);
+    dispatch(getJobs());
+  }, [dispatch]);
 
   return (
     <div>

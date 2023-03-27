@@ -5,7 +5,7 @@ const item = ({ job, index }) => {
   return (
     <div
       className={`grid items-center py-3 px-6 gap-x-6 grid-flow-row 
-      lg:grid-cols-9 border-b border-indeed-borderInputColor 
+      lg:grid-cols-9 border-b border-indeed-borderInputColor text-sm
       ${index % 2 === 0 && 'even:bg-gray-100'}`}
     >
       <h4>{job.company}</h4>

@@ -25,7 +25,7 @@ const ItemAdder = ({ isModalOpenHandler }) => {
       )}
       <div
         className='absolute bottom-0 right-0 border-2 rounded-lg 
-    py-5 px-7 text-left bg-gray-100 drop-shadow-md mb-2 mr-2'
+    py-5 px-7 text-left bg-gray-100 drop-shadow-md mb-2 mr-2 text-md'
       >
         <form className='flex flex-col' onSubmit={onSubmitHandler}>
           <label className='mb-1'>Indeed Url:</label>

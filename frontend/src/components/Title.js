@@ -4,7 +4,7 @@ const Title = () => {
   return (
     <div
       className='grid py-1.5 px-6 gap-x-6 lg:grid-cols-9 
-    font-bold text-lg align-items bg-gray-200 border-black border-y drop-shadow-md'
+    font-bold text-md align-items bg-gray-200 border-black border-y drop-shadow-md'
     >
       <h3>Company</h3>
       <h3>Position</h3>
