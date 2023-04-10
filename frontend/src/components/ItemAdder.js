@@ -13,6 +13,7 @@ const ItemAdder = ({ isModalOpenHandler }) => {
   const onChangeHandler = (e) => setUrl(e.target.value);
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    console.log(url);
     await dispatch(parseJob(url));
     isModalOpenHandler();
     setUrl('');
@@ -24,7 +25,7 @@ const ItemAdder = ({ isModalOpenHandler }) => {
         <Loader color={'#ffffff'} isLoading={true} message={'Parsing...'} />
       )}
       <div
-        className='absolute bottom-0 right-0 border-2 rounded-lg 
+        className='fixed bottom-0 right-0 border-2 rounded-lg 
     py-5 px-7 text-left bg-gray-100 drop-shadow-md mb-2 mr-2 text-md'
       >
         <form className='flex flex-col' onSubmit={onSubmitHandler}>

@@ -15,7 +15,7 @@ const parseJob = async (req, res) => {
     ); // need this line for it to work in headless mode
     await page.goto(`${url}`);
 
-    console.log('page loaded!'); // debugging
+    // console.log('page loaded!'); // debugging
     const positionHandle = await page.$('.jobsearch-JobInfoHeader-title');
     const companyHandle = await page.$('[data-company-name]');
     const locationHandle = await page.$('.css-6z8o9s'); // based on styles
@@ -36,7 +36,7 @@ const parseJob = async (req, res) => {
     const activity = activityHandle
       ? `${await activityHandle.evaluate(
           (activity) => activity.textContent
-        )} from ${todaysDateToString()}`
+        )} (${todaysDateToString()})`
       : 'handler not found';
 
     await browser.close();
@@ -53,8 +53,7 @@ const parseJob = async (req, res) => {
     res.json(response);
   } catch (err) {
     console.log(err.message);
-    res.json(err.message);
-    process.exit(1);
+    res.json({ message: err.message });
   }
 };
 
@@ -63,7 +62,7 @@ const getJobs = async (req, res) => {
     const jobs = await Job.find();
     res.status(200).json(jobs);
   } catch (err) {
-    res.status(404).json(err.message);
+    res.status(404).json({ message: err.message });
   }
 };
 
@@ -78,4 +77,20 @@ const addJob = async (req, res) => {
   }
 };
 
-module.exports = { getJobs, parseJob, addJob };
+// deletes a job based on id
+const deleteJob = async (req, res) => {
+  try {
+    const _id = req.body._id;
+    const deletedJob = await Job.findOneAndDelete({ _id });
+    console.log(deletedJob);
+    console.log('job Deleted!');
+    res
+      .status(200)
+      .json({ message: `Job with id:${_id} was deleted!`, ...deletedJob });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: err.message });
+  }
+};
+
+module.exports = { getJobs, parseJob, addJob, deleteJob };

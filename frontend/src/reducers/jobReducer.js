@@ -9,6 +9,9 @@ import {
   PARSE_JOB_REQUEST,
   PARSE_JOB_SUCCESS,
   PARSE_JOB_FAIL,
+  DELETE_JOB_REQUEST,
+  DELETE_JOB_SUCCESS,
+  DELETE_JOB_FAIL,
 } from '../constants/jobConstants';
 
 export const jobListReducer = createReducer(
@@ -34,6 +37,17 @@ export const jobListReducer = createReducer(
         state.jobList.push(action.payload);
       })
       .addCase(ADD_JOB_FAIL, (state, action) => {
+        state.isLoading = false;
+        state.err = action.payload;
+      })
+      .addCase(DELETE_JOB_REQUEST, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(DELETE_JOB_SUCCESS, (state, action) => {
+        state.isLoading = false;
+        state.jobList.splice(action.payload, 1);
+      })
+      .addCase(DELETE_JOB_FAIL, (state, action) => {
         state.isLoading = false;
         state.err = action.payload;
       })

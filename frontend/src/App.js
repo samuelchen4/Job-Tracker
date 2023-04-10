@@ -1,39 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getJobs } from './actions/jobActions';
-import ItemAdder from './components/ItemAdder';
-import Title from './components/Title';
-import Item from './components/Item';
-import Loader from './components/Loader';
-import Modal from './components/Modal';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './index.css';
+import Header from './components/Header';
+import TemplateScreen from './screens/TemplateScreen';
+import HomeScreen from './screens/HomeScreen';
+
 function App() {
-  const dispatch = useDispatch();
-  const jobsListState = useSelector((state) => state.jobsList);
-  const { jobList, isLoading } = jobsListState;
-
-  const [modal, setModal] = useState(false);
-
-  const isModalOpenHandler = () => {
-    setModal(!modal);
-  };
-
-  useEffect(() => {
-    dispatch(getJobs());
-  }, [dispatch]);
-
   return (
-    <div>
-      {isLoading && <Loader isLoading={isLoading} color='#ffffff' />}
-      {modal && <Modal isModalOpenHandler={isModalOpenHandler} />}
-      <main className='flex flex-col text-center mx-auto'>
-        <Title />
-        {jobList.map((job, index) => (
-          <Item job={job} index={index} />
-        ))}
-        <ItemAdder isModalOpenHandler={isModalOpenHandler} />
-      </main>
-    </div>
+    <Router>
+      <Header />
+      <div className='m-0 p-0 h-full w-full font-Quicksand'>
+        <Routes>
+          <Route path='/template' element={<TemplateScreen />} />
+          <Route path='*' element={<HomeScreen />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

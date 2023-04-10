@@ -1,40 +1,63 @@
 const PizZip = require('pizzip');
 const DocxTemplater = require('docxtemplater');
-
 const fs = require('fs');
 const path = require('path');
+const Template = require('../models/templateModel');
+const { todaysDateToString } = require('../util/helperMethods');
 
 // creates cover Letter with the job info
-const createCoverLetter = () => {
+const createCoverLetter = async (req, res) => {
   try {
-    // for now, store a template cover letter in data
-    // later I will convert the template into binary and store it in db
-    const content = fs.readFileSync(
-      path.resolve('./backend/data', 'Template Cover Letter.docx'),
-      'binary'
-    ); // read the cover letter template
+    const { company, position, location } = req.query;
+    const { data: buffer } = await Template.findOne();
 
-    const zip = new PizZip(content);
+    const zip = new PizZip(buffer);
     const doc = new DocxTemplater(zip, {
       paragraphLoop: true,
       linebreaks: true,
     });
 
     doc.render({
-      company: 'company_name',
-      position: 'Ceo of Swag',
-      location: 'Sidney, BC',
+      company,
+      position,
+      location,
+      currentDate: todaysDateToString,
     });
 
-    const buf = doc.getZip().generate({
+    const contentBuffer = doc.getZip().generate({
       type: 'nodebuffer',
       compression: 'DEFLATE',
     });
 
-    fs.writeFileSync(path.resolve('./backend/data', 'testing.pdf'), buf);
+    res.set({
+      'Content-Disposition': `attachment; filename=${company} ${position} Cover Letter.docx`,
+      'Content-Type':
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+
+    res.send(contentBuffer);
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 };
 
-createCoverLetter();
+//saves file from multer middleware to mongoDB
+const saveTemplateToDb = async (req, res) => {
+  try {
+    const { originalname, mimetype, encoding, size, buffer } = req.file;
+    const templateData = {
+      name: originalname,
+      mimetype,
+      encoding,
+      size,
+      data: buffer,
+    };
+    const template = await Template.create(templateData);
+    res.status(200).json({ _id: template._id, name: template.name });
+  } catch (err) {
+    console.log(err.message);
+    res.json(err.message);
+  }
+};
+
+module.exports = { createCoverLetter, saveTemplateToDb };

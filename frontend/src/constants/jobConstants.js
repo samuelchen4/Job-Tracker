@@ -6,6 +6,10 @@ export const ADD_JOB_REQUEST = 'ADD_JOB_REQUEST';
 export const ADD_JOB_SUCCESS = 'ADD_JOB_SUCCESS';
 export const ADD_JOB_FAIL = 'ADD_JOB_FAIL';
 
+export const DELETE_JOB_REQUEST = 'DELETE_JOB_REQUEST';
+export const DELETE_JOB_SUCCESS = 'DELETE_JOB_SUCCESS';
+export const DELETE_JOB_FAIL = 'DELETE_JOB_FAIL';
+
 export const GET_JOB_REQUEST = 'GET_JOB_REQUEST';
 export const GET_JOB_SUCCESS = 'GET_JOB_SUCCESS';
 export const GET_JOB_FAIL = 'GET_JOB_FAIL';

@@ -7,34 +7,39 @@ const Modal = ({ isModalOpenHandler }) => {
   const dispatch = useDispatch();
   const parsedJob = useSelector((state) => state.parsedJob);
   const { jobInfo, isSuccess, err } = parsedJob;
-  const { company, position, salary, activity, location } = jobInfo;
+  const { company, position, url, salary, activity, location } = jobInfo;
 
-  const [applied, setApplied] = useState(false);
-  const [priority, setPriority] = useState('low');
-  const [comments, setComments] = useState('');
+  // combine all the local states into a formData variable
+  const [formData, setFormData] = useState({
+    company,
+    position,
+    url,
+    salary,
+    activity,
+    location,
+    applied: false,
+    priority: 'low',
+    comments: '',
+  });
 
-  const changeAppliedHandler = () => {
-    setApplied(!applied);
-  };
+  // make handler that sets value for different attributes
+  const onChangeFormDataHandler = (e) => {
+    const copyData = { ...formData };
 
-  const changePriorityHandler = (e) => {
-    setPriority(e.target.value);
-  };
+    if (e.target.name === 'applied') {
+      // had to handle specific case, bc true false isnt working
+      copyData[e.target.name] = !copyData[e.target.name];
+    } else {
+      copyData[e.target.name] = e.target.value;
+    }
 
-  const changeCommentsHandler = (e) => {
-    setComments(e.target.value);
+    // console.log(copyData);
+    setFormData(copyData);
   };
 
   const addJobHandler = async (e) => {
     e.preventDefault();
-
-    const reqData = {
-      ...jobInfo,
-      applied,
-      priority,
-      comments,
-    };
-
+    const reqData = { ...formData };
     await dispatch(addJob(reqData));
     isModalOpenHandler();
   };
@@ -52,22 +57,44 @@ const Modal = ({ isModalOpenHandler }) => {
           <form onSubmit={addJobHandler} className='flex flex-col text-xl'>
             <p className='mb-3'>
               <span className='font-semibold mr-1'>Company:</span>
-              {company}
+              <input
+                name='company'
+                value={formData.company}
+                onChange={onChangeFormDataHandler}
+              />
             </p>
             <p className='mb-3'>
-              <span className='font-semibold mr-1'>Position:</span> {position}
+              <span className='font-semibold mr-1'>Position:</span>{' '}
+              <input
+                name='position'
+                value={formData.position}
+                onChange={onChangeFormDataHandler}
+              />
             </p>
 
             <p className='mb-3'>
-              <span className='font-semibold mr-1 mr-1'>Salary:</span> {salary}
+              <span className='font-semibold mr-1 mr-1'>Salary:</span>{' '}
+              <input
+                name='salary'
+                value={formData.salary}
+                onChange={onChangeFormDataHandler}
+              />
             </p>
             <p className='mb-3'>
-              <span className='font-semibold mr-1 mr-1'>Location:</span>{' '}
-              {location}
+              <span className='font-semibold mr-1 mr-1'>Location:</span>
+              <input
+                name='location'
+                value={formData.location}
+                onChange={onChangeFormDataHandler}
+              />
             </p>
             <p className='mb-3'>
-              <span className='font-semibold mr-1 mr-1'>Activity:</span>{' '}
-              {activity}
+              <span className='font-semibold mr-1 mr-1'>Activity:</span>
+              <input
+                name='activity'
+                value={formData.activity}
+                onChange={onChangeFormDataHandler}
+              />
             </p>
             <div className='mb-3'>
               <label>
@@ -77,21 +104,23 @@ const Modal = ({ isModalOpenHandler }) => {
                 Yes
               </label>
               <input
+                name='applied'
                 type='checkbox'
                 id='yes'
                 className='mr-1'
-                checked={applied}
-                onChange={changeAppliedHandler}
+                checked={formData.applied}
+                onChange={onChangeFormDataHandler}
               />
               <label className='mr-0.5' htmlFor='no'>
                 No
               </label>
               <input
+                name='applied'
                 type='checkbox'
                 id='no'
                 className='mr-1'
-                checked={!applied}
-                onChange={changeAppliedHandler}
+                checked={!formData.applied}
+                onChange={onChangeFormDataHandler}
               />
             </div>
             <div className='mb-3'>
@@ -102,34 +131,37 @@ const Modal = ({ isModalOpenHandler }) => {
                 Low
               </label>
               <input
+                name='priority'
                 type='checkbox'
                 value='low'
                 id='low'
                 className='mr-1'
-                checked={priority === 'low'}
-                onChange={changePriorityHandler}
+                checked={formData.priority === 'low'}
+                onChange={onChangeFormDataHandler}
               />
               <label htmlFor='medium' className='mr-0.5'>
                 Medium
               </label>
               <input
+                name='priority'
                 type='checkbox'
                 value='medium'
                 id='medium'
                 className='mr-1'
-                checked={priority === 'medium'}
-                onChange={changePriorityHandler}
+                checked={formData.priority === 'medium'}
+                onChange={onChangeFormDataHandler}
               />
               <label htmlFor='high' className='mr-0.5'>
                 High
               </label>
               <input
+                name='priority'
                 type='checkbox'
                 value='high'
                 id='high'
                 className='mr-1'
-                checked={priority === 'high'}
-                onChange={changePriorityHandler}
+                checked={formData.priority === 'high'}
+                onChange={onChangeFormDataHandler}
               />
             </div>
             <div className='mb-3 flex items-start'>
@@ -137,9 +169,10 @@ const Modal = ({ isModalOpenHandler }) => {
                 <span className='font-semibold mr-1'>Comments:</span>
               </label>
               <textarea
+                name='comments'
                 className='resize-y w-full h-[32px]'
-                onChange={changeCommentsHandler}
-                value={comments}
+                onChange={onChangeFormDataHandler}
+                value={formData.comments}
                 maxLength={500}
               />
             </div>

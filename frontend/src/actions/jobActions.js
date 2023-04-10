@@ -2,6 +2,9 @@ import {
   ADD_JOB_FAIL,
   ADD_JOB_REQUEST,
   ADD_JOB_SUCCESS,
+  DELETE_JOB_FAIL,
+  DELETE_JOB_REQUEST,
+  DELETE_JOB_SUCCESS,
   GET_JOB_FAIL,
   GET_JOB_REQUEST,
   GET_JOB_SUCCESS,
@@ -42,5 +45,16 @@ export const parseJob = (url) => async (dispatch) => {
     dispatch({ type: PARSE_JOB_SUCCESS, payload: data });
   } catch (err) {
     dispatch({ type: PARSE_JOB_FAIL, payload: err.response.data.message });
+  }
+};
+
+//sends delete request based on _id
+export const deleteJob = (_id, index) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_JOB_REQUEST });
+    await Axios.delete('/api/jobs/delete', { data: { _id } });
+    dispatch({ type: DELETE_JOB_SUCCESS, payload: index });
+  } catch (err) {
+    dispatch({ type: DELETE_JOB_FAIL, payload: err.response.data.message });
   }
 };
