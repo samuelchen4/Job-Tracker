@@ -38,6 +38,7 @@ const createCoverLetter = async (req, res) => {
     res.send(contentBuffer);
   } catch (err) {
     console.log(err.message);
+    res.end();
   }
 };
 
@@ -55,7 +56,6 @@ const saveTemplateToDb = async (req, res) => {
     const template = await Template.create(templateData);
     res.status(200).json({ _id: template._id, name: template.name });
   } catch (err) {
-    console.log(err.message);
     res.json(err.message);
   }
 };

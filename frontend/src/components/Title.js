@@ -1,10 +1,12 @@
 import React from 'react';
 
-const Title = () => {
+const Title = ({ verticalScrollPosition }) => {
   return (
     <div
-      className='grid py-1.5 px-6 gap-x-6 lg:grid-cols-10 
-    font-bold text-md align-items bg-gray-200 border-black border-y drop-shadow-md'
+      className={`grid py-1.5 px-6 gap-x-6 lg:grid-cols-10 
+    font-bold text-md align-items bg-gray-200 border-black border-y drop-shadow-md ${
+      verticalScrollPosition >= 75 && 'fixed w-full top-0'
+    }`}
     >
       <h3>Company</h3>
       <h3>Position</h3>

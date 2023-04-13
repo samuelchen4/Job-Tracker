@@ -77,13 +77,28 @@ const addJob = async (req, res) => {
   }
 };
 
+const updateJob = async (req, res) => {
+  try {
+    //replace document with req.body for the same _ids
+    const { _id } = req.params;
+    const { updateObj } = req.body;
+    const job = await Job.findById(_id);
+    job.set({ ...updateObj });
+    await job.save();
+    console.log(job);
+    console.log(updateObj);
+    res.status(200).json(updateObj);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // deletes a job based on id
 const deleteJob = async (req, res) => {
   try {
     const _id = req.body._id;
     const deletedJob = await Job.findOneAndDelete({ _id });
-    console.log(deletedJob);
-    console.log('job Deleted!');
     res
       .status(200)
       .json({ message: `Job with id:${_id} was deleted!`, ...deletedJob });
@@ -93,4 +108,4 @@ const deleteJob = async (req, res) => {
   }
 };
 
-module.exports = { getJobs, parseJob, addJob, deleteJob };
+module.exports = { getJobs, parseJob, addJob, updateJob, deleteJob };

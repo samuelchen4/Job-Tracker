@@ -1,20 +1,30 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCirclePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFile,
+  faTrash,
+  faPenToSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { createCoverLetter } from '../actions/templateActions';
 import { deleteJob } from '../actions/jobActions';
 
 // an individual job item
-const Item = ({ job, index }) => {
+const Item = ({ job, index, isModalOpenHandler, setModalPropsHandler }) => {
   const dispatch = useDispatch();
 
   const createCoverLetterHandler = () => {
     dispatch(createCoverLetter(job));
   };
 
+  const editJobHandler = () => {
+    setModalPropsHandler('Edit Job', 'jobsList', index);
+    isModalOpenHandler();
+  };
+
   const deleteJobHandler = () => {
-    const input = window.prompt(`Enter Yes to delete job for ${job.company}!`);
+    const input =
+      window.prompt(`Enter Yes to delete job for ${job.company}!`) || '';
     if (input.toLowerCase() === 'yes') {
       dispatch(deleteJob(job._id, index));
     }
@@ -42,15 +52,21 @@ const Item = ({ job, index }) => {
       <div className='flex justify-center text-lg'>
         <button
           onClick={createCoverLetterHandler}
-          className='mr-3 hover:transform hover:scale-110 transition duration-100'
+          className='hover:transform hover:scale-110 transition duration-100'
         >
-          <FontAwesomeIcon icon={faFileCirclePlus} />
+          <FontAwesomeIcon icon={faFile} style={{ color: '#000000' }} />
+        </button>
+        <button
+          onClick={editJobHandler}
+          className='mx-3 hover:transform hover:scale-110 transition duration-100'
+        >
+          <FontAwesomeIcon icon={faPenToSquare} style={{ color: '#000000' }} />
         </button>
         <button
           onClick={deleteJobHandler}
           className='hover:transform hover:scale-110 transition duration-100'
         >
-          <FontAwesomeIcon icon={faTrash} />
+          <FontAwesomeIcon icon={faTrash} style={{ color: '#000000' }} />
         </button>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { parseJob } from '../actions/jobActions';
 import Loader from './Loader';
 
-const ItemAdder = ({ isModalOpenHandler }) => {
+const ItemAdder = ({ isModalOpenHandler, setModalPropsHandler }) => {
   const dispatch = useDispatch();
   const parsedJob = useSelector((state) => state.parsedJob);
   const { isLoading } = parsedJob;
@@ -16,6 +16,7 @@ const ItemAdder = ({ isModalOpenHandler }) => {
     console.log(url);
     await dispatch(parseJob(url));
     isModalOpenHandler();
+    setModalPropsHandler('New Job', 'parsedJob');
     setUrl('');
   };
 

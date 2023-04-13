@@ -11,6 +11,9 @@ import {
   PARSE_JOB_FAIL,
   PARSE_JOB_REQUEST,
   PARSE_JOB_SUCCESS,
+  UPDATE_JOB_FAIL,
+  UPDATE_JOB_REQUEST,
+  UPDATE_JOB_SUCCESS,
 } from '../constants/jobConstants';
 import Axios from 'axios';
 
@@ -34,6 +37,18 @@ export const getJobs = () => async (dispatch) => {
     dispatch({ type: GET_JOB_SUCCESS, payload: data });
   } catch (err) {
     dispatch({ type: GET_JOB_FAIL, payload: err.response.data.message });
+  }
+};
+
+export const updateJob = (_id, updateObj, index) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_JOB_REQUEST });
+    const { data } = await Axios.put(`/api/jobs/update/${_id}`, {
+      updateObj,
+    });
+    dispatch({ type: UPDATE_JOB_SUCCESS, payload: data, index });
+  } catch (err) {
+    dispatch({ type: UPDATE_JOB_FAIL, payload: err.response.data.message });
   }
 };
 
