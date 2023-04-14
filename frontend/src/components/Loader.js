@@ -7,7 +7,7 @@ const Loader = ({ isLoading, color, message = '' }) => {
       <MoonLoader
         loading={isLoading}
         color={color}
-        speedMultiplier={0.6}
+        speedMultiplier={0.5}
         size={50}
       />
       <p className='mt-3 font-semibold text-xl'>{message}</p>

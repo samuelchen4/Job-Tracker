@@ -24,7 +24,7 @@ const HomeScreen = () => {
   // write a function that displays the Yoffset everytime the y position is changed
   const checkVerticalScroll = () => {
     const vScroll = window.scrollY;
-    console.log(vScroll);
+    // console.log(vScroll);
     setVerticalScrollPosition(vScroll);
   };
 
@@ -67,6 +67,7 @@ const HomeScreen = () => {
         <Title verticalScrollPosition={verticalScrollPosition} />
         {jobList.map((job, index) => (
           <Item
+            key={job._id}
             job={job}
             index={index}
             isModalOpenHandler={isModalOpenHandler}

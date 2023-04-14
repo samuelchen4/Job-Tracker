@@ -86,8 +86,8 @@ const updateJob = async (req, res) => {
     job.set({ ...updateObj });
     await job.save();
     console.log(job);
-    console.log(updateObj);
-    res.status(200).json(updateObj);
+    // console.log(updateObj);
+    res.status(200).json(job);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err.message });

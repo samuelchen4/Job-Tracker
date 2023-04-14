@@ -9,7 +9,7 @@ const Header = () => {
           <Link to='/'>Job Tracker</Link>
         </h1>
         <div className='flex'>
-          <p>
+          <p className='hover:font-semibold'>
             <Link to='/template'>Templater</Link>
           </p>
         </div>
